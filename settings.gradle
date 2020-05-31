@@ -1,0 +1,3 @@
+include ':androidApp'
+include ':shared'
+rootProject.name = "GitHubKMP" // if this name has space, Gradle will not create a tasks for each modules

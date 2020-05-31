@@ -1,0 +1,74 @@
+apply plugin: 'com.android.library' // Android library to use the Android SDK
+apply plugin: 'kotlin-multiplatform' // Kotlin KMP plugin for the Kotlin/Native compiler
+
+android { // only require because we need to access the AndroidSDK in the shared code
+    compileSdkVersion 28
+    defaultConfig {
+        minSdkVersion 15
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+kotlin { // define the targets
+
+    targets { // either the iOS Arm device or iOS simulator using X64
+        final def iOSTarget = System.getenv('SDK_NAME')?.startsWith("iphoneos") ? presets.iosArm64 : presets.iosX64
+
+        fromPreset(iOSTarget, 'ios') { // iOS framework named shared is created for iOS
+            binaries {
+                framework('shared')
+            }
+        }
+        fromPreset(presets.android, 'android') // define Android target for shared code
+    }
+
+    sourceSets { // define dependencies for the shared code
+        commonMain.dependencies {
+            // for the common code
+            api 'org.jetbrains.kotlin:kotlin-stdlib-common'
+        }
+        androidMain.dependencies {
+            // android common dependencies
+            api 'org.jetbrains.kotlin:kotlin-stdlib'
+        }
+        iosMain.dependencies {
+            // don't need to add the standard library, Kotlin/Native will include the standard library when compiling code for iOS
+        }
+    }
+
+}
+
+task packForXCode(type: Sync) {
+    // Sets a directory for the framework
+    final File frameworkDir = new File(buildDir, "xcode-frameworks")
+    // Determines the correct framework to build based on the selected target in the Xcode project, with the default of DEBUG
+    final String mode = project.findProperty("XCODE_CONFIGURATION")?.toUpperCase() ?: 'DEBUG'
+    final def framework = kotlin.targets.ios.binaries.getFramework("shared", mode) // SharedCode -> shared (framework is named shared instead of SharedCode fromPreset.binaries.framework), iOS -> ios (we are using lowercase, fromPreset)
+
+    inputs.property "mode", mode
+    dependsOn framework.linkTask
+
+    // Copy the file from the build directory to the framework directory
+    from { framework.outputFile.parentFile }
+    into frameworkDir
+
+    // Bash script named gradlew is created in the framework directory that Xcode call to build the shared framework
+    // The script uses the version of the JDK that is embedded in Android Studio
+    doLast {
+        new File(frameworkDir, 'gradlew').with {
+            text = "#!/bin/bash\n" +
+                    "export 'JAVA_HOME=${System.getProperty("java.home")}'\n" +
+                    "cd '${rootProject.rootDir}'\n" +
+                    "./gradlew \$@\n"
+            setExecutable(true)
+        }
+    }
+}
+
+// The share build task depends on the packForXCode task
+tasks.build.dependsOn packForXCode
