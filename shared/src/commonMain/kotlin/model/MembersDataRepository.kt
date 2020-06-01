@@ -7,7 +7,7 @@ class MembersDataRepository (
     private val api: GitHubApi
 ): DataRepository {
 
-    override var members: String? = null
+    override var members: List<Member>? = null
 
     override var onRefreshListeners: List<() -> Unit> = emptyList()
 
@@ -15,6 +15,7 @@ class MembersDataRepository (
         val newMembers = try {
             api.getMembers()
         } catch (cause: Throwable) {
+            println(cause.message)
             throw UpdateProblem()
         }
 

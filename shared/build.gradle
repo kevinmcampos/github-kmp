@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library' // Android library to use the Android SDK
 apply plugin: 'kotlin-multiplatform' // Kotlin KMP plugin for the Kotlin/Native compiler
+apply plugin: 'kotlinx-serialization'
 
 android { // only require because we need to access the AndroidSDK in the shared code
     compileSdkVersion 28
@@ -36,6 +37,7 @@ kotlin { // define the targets
             // we use -core and -core-common library versions in commonMain
             implementation "io.ktor:ktor-client-core:$ktor_version"
             implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core-common:$coroutines_version"
+            implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:$serialization_version"
         }
         androidMain.dependencies {
             // android common dependencies
@@ -43,6 +45,7 @@ kotlin { // define the targets
             // androidMain dependencies are the Android versions of the library
             implementation "io.ktor:ktor-client-android:$ktor_version"
             implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinx_coroutines_version"
+            implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime:$serialization_version"
         }
         iosMain.dependencies {
             // don't need to add the standard library, Kotlin/Native will include the standard library when compiling code for iOS
@@ -50,6 +53,7 @@ kotlin { // define the targets
             // core-native version of coroutines and ios-ktor client
             implementation "io.ktor:ktor-client-ios:$ktor_version"
             implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core-native:$kotlinx_coroutines_version"
+            implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime-native:$serialization_version"
         }
     }
 

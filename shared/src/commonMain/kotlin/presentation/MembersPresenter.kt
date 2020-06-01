@@ -24,7 +24,7 @@ class MembersPresenter(
     private val onRefreshListener: () -> Unit = this::showData
 
     private fun showData() {
-        view.onUpdate(repository.members ?: "No members")
+        view.onUpdate(repository.members.orEmpty())
     }
 
     private fun updateData() {

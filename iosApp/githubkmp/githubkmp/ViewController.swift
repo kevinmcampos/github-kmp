@@ -33,7 +33,7 @@ class ViewController: UIViewController, MembersView {
         presenter.onDestroy()
     }
 
-    func onUpdate(members: String) {
+    func onUpdate(members: Array<Member>) {
         print(members)
     }
 

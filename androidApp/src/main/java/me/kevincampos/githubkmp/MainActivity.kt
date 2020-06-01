@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import me.kevincampos.githubkmp.api.UpdateProblem
+import me.kevincampos.githubkmp.model.Member
 import me.kevincampos.githubkmp.presentation.MembersPresenter
 import me.kevincampos.githubkmp.presentation.MembersView
 
@@ -33,9 +34,9 @@ class MainActivity : AppCompatActivity(), MembersView {
 
     override var isUpdating: Boolean = false
 
-    override fun onUpdate(members: String) {
+    override fun onUpdate(members: List<Member>) {
         runOnUiThread {
-            Toast.makeText(this, members, Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, members.toString(), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -44,6 +45,9 @@ class MainActivity : AppCompatActivity(), MembersView {
             is UpdateProblem -> getString(R.string.error_connection)
             else -> getString(R.string.error_unknown)
         }
-        Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
+        error.printStackTrace()
+        runOnUiThread {
+            Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
+        }
     }
 }
