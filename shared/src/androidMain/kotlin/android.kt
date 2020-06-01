@@ -1,4 +1,4 @@
-package com.raywenderlich
+package me.kevincampos.githubkmp
 
 import android.os.Build
 

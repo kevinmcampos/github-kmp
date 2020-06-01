@@ -15,6 +15,8 @@ android { // only require because we need to access the AndroidSDK in the shared
 }
 
 kotlin { // define the targets
+//    jvm()
+//    js()
 
     targets { // either the iOS Arm device or iOS simulator using X64
         final def iOSTarget = System.getenv('SDK_NAME')?.startsWith("iphoneos") ? presets.iosArm64 : presets.iosX64
@@ -31,16 +33,31 @@ kotlin { // define the targets
         commonMain.dependencies {
             // for the common code
             api 'org.jetbrains.kotlin:kotlin-stdlib-common'
+            // we use -core and -core-common library versions in commonMain
+            implementation "io.ktor:ktor-client-core:$ktor_version"
+            implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core-common:$coroutines_version"
         }
         androidMain.dependencies {
             // android common dependencies
             api 'org.jetbrains.kotlin:kotlin-stdlib'
+            // androidMain dependencies are the Android versions of the library
+            implementation "io.ktor:ktor-client-android:$ktor_version"
+            implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinx_coroutines_version"
         }
         iosMain.dependencies {
             // don't need to add the standard library, Kotlin/Native will include the standard library when compiling code for iOS
+
+            // core-native version of coroutines and ios-ktor client
+            implementation "io.ktor:ktor-client-ios:$ktor_version"
+            implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core-native:$kotlinx_coroutines_version"
         }
     }
 
+}
+
+// workaround for https://youtrack.jetbrains.com/issue/KT-27170
+configurations {
+    compileClasspath
 }
 
 task packForXCode(type: Sync) {

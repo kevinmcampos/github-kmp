@@ -15,6 +15,7 @@
 		E86E1EC9248327C8009EA435 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E86E1EC7248327C8009EA435 /* LaunchScreen.storyboard */; };
 		E8CD5B422483A25800E7120C /* shared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E8CD5B412483A25800E7120C /* shared.framework */; };
 		E8CD5B432483A25800E7120C /* shared.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E8CD5B412483A25800E7120C /* shared.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E8CD5B47248475CF00E7120C /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8CD5B46248475CF00E7120C /* BaseView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -41,6 +42,7 @@
 		E86E1EC8248327C8009EA435 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E86E1ECA248327C8009EA435 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E8CD5B412483A25800E7120C /* shared.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = shared.framework; path = "../../shared/build/xcode-frameworks/shared.framework"; sourceTree = "<group>"; };
+		E8CD5B46248475CF00E7120C /* BaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +84,7 @@
 				E86E1EC5248327C8009EA435 /* Assets.xcassets */,
 				E86E1EC7248327C8009EA435 /* LaunchScreen.storyboard */,
 				E86E1ECA248327C8009EA435 /* Info.plist */,
+				E8CD5B46248475CF00E7120C /* BaseView.swift */,
 			);
 			path = githubkmp;
 			sourceTree = "<group>";
@@ -190,6 +193,7 @@
 				E86E1EC1248327C7009EA435 /* ViewController.swift in Sources */,
 				E86E1EBD248327C7009EA435 /* AppDelegate.swift in Sources */,
 				E86E1EBF248327C7009EA435 /* SceneDelegate.swift in Sources */,
+				E8CD5B47248475CF00E7120C /* BaseView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
