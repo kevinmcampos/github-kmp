@@ -3,6 +3,7 @@ package me.kevincampos.githubkmp
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 import me.kevincampos.githubkmp.api.UpdateProblem
 import me.kevincampos.githubkmp.model.Member
@@ -18,12 +19,15 @@ class MainActivity : AppCompatActivity(), MembersView {
         MembersPresenter(this, dataRepository)
     }
 
+    private lateinit var adapter: MemberAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         greeting.text = Greeting().greeting()
 
+        setupRecyclerView()
         presenter.onCreate()
     }
 
@@ -35,8 +39,9 @@ class MainActivity : AppCompatActivity(), MembersView {
     override var isUpdating: Boolean = false
 
     override fun onUpdate(members: List<Member>) {
+        adapter.members = members
         runOnUiThread {
-            Toast.makeText(this, members.toString(), Toast.LENGTH_SHORT).show()
+            adapter.notifyDataSetChanged()
         }
     }
 
@@ -50,4 +55,11 @@ class MainActivity : AppCompatActivity(), MembersView {
             Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
         }
     }
+
+    private fun setupRecyclerView() {
+        membersRecyclerView.layoutManager = LinearLayoutManager(this)
+        adapter = MemberAdapter(listOf())
+        membersRecyclerView.adapter = adapter
+    }
+
 }
